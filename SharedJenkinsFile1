@@ -1,0 +1,29 @@
+@Library('kaboda-sharedlibs') _
+pipeline {
+agent any
+tools {
+		maven 'maven3.8.5'
+	      }
+	stages {
+		stage('CheckoutCode') {
+			steps {
+					git 'https://github.com/kaboda1/paypal-web-app'
+					}
+			}
+		stage("Build") {
+			steps {
+					common("Build")
+			}
+		}
+		stage("CodeQuality") {
+			steps {
+					common("SonarQube Report")
+			}
+		}
+		stage("UploadArtifacts Into Nexus") {
+			steps{
+					common("Upload Into Nexus")
+			}
+		}
+	}
+	}
